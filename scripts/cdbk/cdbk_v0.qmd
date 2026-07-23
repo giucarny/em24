@@ -1,0 +1,26 @@
+---
+title: "Euromanifesto 2024 Documents"
+author: "Giuseppe Carteny, Philipp König, Divya Mani Adhikari"
+format: pdf
+---
+
+```{r Admin, echo=FALSE, warning=FALSE, error=FALSE, results='asis'}
+
+want <- c('here', 'magrittr', 'data.table', 'dplyr','tibble', 'tidyr', 
+          # 'stringi', 'stringr',
+          'openxlsx', 'haven',
+          'ggplot2', "ggthemes", "patchwork", 'ggpubr',
+          "kableExtra")
+have <- want %in% rownames(installed.packages())
+if(any(!have)) {install.packages(want[!have])}
+junk <- lapply(want, library, character.only=T)
+options(scipen = 99)
+
+rm(list = ls())
+
+summary_spreadsheet <- read.xlsx(here('data', 'em2024_list_20260723.xlsx'))
+
+summary_spreadsheet_data <- summary_spreadsheet |> filter(data_for_cdbk==1)
+
+
+```
