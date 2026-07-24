@@ -18,11 +18,11 @@ options(scipen = 99)
 
 rm(list = ls())
 
-summary_spreadsheet <- read.xlsx(here('data', 'em2024_list_20260723.xlsx'))
+summary_spreadsheet <- read.xlsx(here('data', 'em2024_list_20260724.xlsx'))
 
 summary_df <- summary_spreadsheet |> filter(data_for_cdbk==1)
 
-names(summary_df)[names(summary_df)=="scope.(is.manifesto).scope.(is.manifesto?)"] <- 'doc_type'
+# Need to add countrynames with countrycode package
 
 ```
 
@@ -40,15 +40,32 @@ other_n <- length(summary_df$doc_type[summary_df$doc_type==2])
 man_perc <- paste0(round((man_n/doc_n)*100,0), '%')
 other_perc <- paste0(round((other_n/doc_n)*100,0), '%')
 
+summary_votes <- 
+  summary_df |> 
+  summarise(
+    .by = division_id,
+    votes_docs = sum(votes_percent[availability==1]),
+    votes_man = sum(votes_percent[doc_type==1]),
+    votes_noman = sum(votes_percent[doc_type %in% c(2,3)])
+  )
+
+missing_countries <- summary_votes |> filter(votes_docs==0) 
+
 ```
 
-This document summarises the collection, preprocessing, and systematisation of the party manifestos—hereinafter referred to as *Euromanifestos*—presented by the electoral lists that participated in the 2024 European Parliament (EP) elections. The materials were collected between October 2024 and July 2026 by several research groups, with the process ultimately finalised by the Euromanifesto team of the Societal Observatory Using Novel Data Sources (SOUNDS) project at Saarland University. The collection relied primarily on searches of institutional and party websites and their archived versions, including webpages preserved by the Internet Archive’s Wayback Machine.[^wayback]
+# Summary
 
-In line with the Euromanifesto Project and manifesto research more generally, we define electoral programmes or manifestos as official programmatic documents produced by political actors that outline the issues, policy priorities, and proposals promoted in a specific election. Where comparable programmatic documents were not available, we relied on other materials—such as leaflets, press releases, or news articles—published by the relevant electoral lists before the 2024 elections and a sufficiently comprehensive account of their electoral priorities and policy positions. 
+This document summarises the collection, preprocessing, and systematisation of the party manifestos presented by the electoral lists that participated in the 2024 European Parliament (EP) elections --- hereinafter referred to as *Euromanifestos*. The materials were collected between October 2024 and July 2026 by several research groups, with the process ultimately finalised by the Euromanifesto team of the Societal Observatory Using Novel Data Sources (SOUNDS) project at Saarland University. The collection relied primarily on searches of institutional and party websites and their archived versions, including webpages preserved by the Internet Archive’s Wayback Machine.[^wayback]
 
-Where available, we relied on official PDF documents produced by the electoral lists that participated in the EP elections. When electoral manifestos were published as webpages, we scraped the relevant content and converted it into PDF documents.
+# Selection and inclusion criteria
+
+We define electoral programmes or manifestos as official programmatic documents produced by political actors that outline the issues, policy priorities, and proposals promoted in a specific election. Where comparable programmatic documents were not available, we relied on other materials—such as leaflets, press releases, or news articles—published by the relevant electoral lists before the 2024 elections and a sufficiently comprehensive account of their electoral priorities and policy positions. Where available, we relied on official PDF documents produced by the electoral lists that participated in the EP elections. When electoral manifestos were published as webpages, we scraped the relevant content and converted it into PDF documents. In line with the case selection criteria applied in earlier, we include in our corpus the documents all lists that obtained at least one seat in the 2024 EP elections, as recorded in the official results provided by the EP[^ep_results_database].
+
+# Summary statistics 
 
 We collected documents for `r doc_n` of the `r ep_lists` electoral lists that participated in the 2024 EP elections and secured at least one seat in the EP, corresponding to approximately `r doc_perc` of the total. Of this 
 
 [^wayback]: Internet Archive, *Wayback Machine*. <https://web.archive.org/>
+
+[^ep_results_database]: EP elections' electoral data. <https://results.elections.europa.eu/en/tools/download-datasheets/>
 
