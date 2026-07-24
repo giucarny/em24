@@ -95,12 +95,8 @@ def main():
             "--output_format", "markdown",
             "--skip_existing",
             "--disable_image_extraction",
-            "--workers", "1",             # one GPU worker at a time
+            "--workers", "1",              # one GPU worker at a time
             "--max_tasks_per_worker", "5", # recycle worker every 5 PDFs to free memory
-            "--layout_batch_size", "4",
-            "--detection_batch_size", "4",
-            "--recognition_batch_size", "16",
-            "--table_rec_batch_size", "4",
         ]
 
         result = subprocess.run(cmd, capture_output=False)
