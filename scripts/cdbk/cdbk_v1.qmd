@@ -1,5 +1,5 @@
 ---
-title: "Euromanifesto 2024 Documents"
+title: "Euromanifesto Study 2024 (Documents)"
 
 author:
   - name: Giuseppe Carteny
@@ -25,6 +25,12 @@ author:
       - name: GESIS - Leibniz Institute for the Social Sciences
         city: Mannheim
         country: Germany
+  
+  - name: Rosa Maria Navarrete
+    affiliations:
+      - name: Department of Political Science and International Relations, Universidad Autonoma de Madrid
+        city: Madrid
+        country: Spain
 
   - name: Alexander Hartland
     affiliations:
@@ -32,23 +38,17 @@ author:
         city: Saarbrücken
         country: Germany
 
-  - name: Rosa Maria Navarrete
-    affiliations:
-      - name: Department of Political Science and International Relations, Universidad Autonoma de Madrid
-        city: Madrid
-        country: Spain
-
   - name: Spencer James Corp
     affiliations:
       - name: Department of Sociology, The University of North Carolina at Chapel Hill
         city: Chapel Hill
-        country: United States (NC)
+        country: United States
 
   - name: Sayman Johannes Rohleder-Stribl
     affiliations:
       - name: Department of Political Science, The University of North Carolina at Chapel Hill
         city: Chapel Hill
-        country: United States (NC)
+        country: United States
 
 format:
   pdf:
@@ -175,7 +175,7 @@ doc_votes_df   <-
   pivot_longer(dplyr::starts_with('votes')) |>
   mutate(name = case_when(
     name=='votes_man' ~ 'Manifesto',
-    name=='votes_noman' ~ 'Pledges or else',
+    name=='votes_noman' ~ 'Short programme',
     name=='votes_other' ~ 'Other'
   )) |> 
   rename(`Document type` = name) 
@@ -254,7 +254,7 @@ summary_df <-
 
 This document summarises the collection, preprocessing, and systematisation of the party manifestos presented by the electoral lists that participated in the 2024 European Parliament (EP) elections --- hereinafter referred to as *Euromanifestos*. The materials were collected between October 2024 and July 2026 by several research groups at Saarland University (Germany), the European University Institute (Italy), and the University of North Carolina at Chapel Hill (United States).[^hiwis] The process was ultimately finalised by the Euromanifesto team of the Societal Observatory Using Novel Data Sources (SOUNDS) project at Saarland University. The collection was based on a systematic review of institutional and party websites and their archived versions, including webpages preserved by the Internet Archive's Wayback Machine.[^wayback] The corpus, its accompanying documentation, and the code used to convert PDF documents and scraped web content into Markdown files are available in a public, version-controlled repository.[^repository]
 
-[^hiwis]: The Saarland team would also like to thank Shahla Jahangiri and the other student assistants for their invaluable work and support in the earlier phases of the document collection.
+[^hiwis]: The Saarland team would also like to thank Shahla Jahangiri for her invaluable work and support in the earlier phases of the document collection.
 [^repository]: Euromanifesto 2024 repository: <https://github.com/giucarny/em24>.
 
 # Selection and inclusion criteria
@@ -294,9 +294,9 @@ availability_comb_plot
 We collected documents for `r doc_n` of the `r ep_lists` electoral lists that participated in the 2024 EP elections and that were recorded in the official EP election results. This corresponds to approximately `r doc_perc` of the total. The vast majority of these documents, `r nocoalitions_n` texts (`r nocoalitions_perc` of the corpus), refer to party lists, whereas only `r coalitions_n` (`r coalitions_perc`) of them are electoral coalition documents. 
 Of these `r doc_n`,  `r man_n` (`r man_perc`) are party manifestos or official electoral programmes, `r noman_n` (`r noman_perc`) are non-manifesto electoral campaign materials, and `r other_n` (`r other_perc`) are other kind of relevant documents. Of the whole set of available documents, `r party_pdf_n` (`r party_pdf_perc`) are official documents provided by the electoral lists, while `r scraped_n` (`r scraped_perc`) are materials obtained via web scraping from online sources - tipically, the lists' websites.
 
-We were not able to collect manifestos or other relevant documents for `r length(missing_countries)` `r ifelse(length(missing_countries)>1,"countries", "country")` (`r glue::glue_collapse(unique(missing_countries), sep = ", ", last = ", and ")`). Therefore, our corpus consists of party manifestos from `r avail_countries_n` countries. 
-The collected document represent on the average `r mean_avail_votes` (SD: `r sd_avail_votes`) of the valid votes obtained by the electoral lists that participated in the EP elections, with a maximum value of `r max_avail_votes` in `r max_avail_votes_country` and a minimum of `r min_avail_votes` in `r min_avail_votes_country` (see Figure \ref{fig:coverage}).
-The five most relevant missing documents are those for `r top_5_mis_acronym` that obtained `r top_5_mis_vperc` of the valid votes in the respective party systems (`r top_5_mis_country`).  
+We were not able to collect manifestos or other relevant documents for `r length(missing_countries)` `r ifelse(length(missing_countries)>1,"countries", "country")` (`r glue::glue_collapse(unique(missing_countries), sep = " and ")`). Therefore, our corpus consists of party manifestos from `r avail_countries_n` countries. 
+The collected documents represent on average `r mean_avail_votes` (SD: `r sd_avail_votes`) of the valid votes obtained by the electoral lists that participated in the EP elections, with a maximum value of `r max_avail_votes` in `r max_avail_votes_country` and a minimum of `r min_avail_votes` in `r min_avail_votes_country` (see Figure \ref{fig:coverage}).
+The five most relevant missing documents are those for `r top_5_mis_acronym`, which obtained `r top_5_mis_vperc` of the valid votes in their respective party system (`r top_5_mis_country`).  
 
 Document length is highly variable. The average lenght of the whole set of documents is equal to `r word_count_mean` words, with a standard deviation equal to `r word_count_sd` words. This holds also considering just full manifestos (Mean: `r man_word_count_mean`; SD: `r man_word_count_sd`).
 
@@ -321,14 +321,14 @@ summary_df %>%
   dplyr::select(
     countryname,
     ep_id,
-    em_id_1,
+    em_id,
     party_acronym,
     party_label
   ) %>%
   rename(
     `Country` = countryname,
     `EP ID` = ep_id,
-    `EM ID` = `em_id_1`,
+    `EM ID` = `em_id`,
     `Acronym` = party_acronym, 
     `Name` = party_label 
   ) |> 
@@ -348,12 +348,12 @@ summary_df %>%
     font_size = 8
   ) %>%
   column_spec(
-    5,
+    4,
     width = "2.5cm",
     latex_valign = "p"
   ) %>%
   column_spec(
-    6,
+    5,
     width = "6cm",
     latex_valign = "p"
   )
