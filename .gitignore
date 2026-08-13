@@ -1,3 +1,7 @@
+# data dir # 
+/data/em24_pdf/
+/data/em24_md/
+
 # History files
 .Rhistory
 .Rapp.history

@@ -93,7 +93,7 @@ options(scipen = 99)
 
 rm(list = ls())
 
-summary_spreadsheet <- read.xlsx(here('data', 'em2024_list_v1.xlsx'))
+summary_spreadsheet <- read.xlsx(here('data', 'em24_list_v1.xlsx'))
 
 summary_spreadsheet <-
   summary_spreadsheet |> 
@@ -113,7 +113,7 @@ summary_df <- summary_spreadsheet |> filter(data_for_cdbk==1)
 ```{r summary_stats, echo=FALSE, results='asis', warning=FALSE, error=FALSE, message=FALSE}
 
 ep_lists <- nrow(summary_df)
-doc_n <- sum(summary_df$availability )
+doc_n <- sum(summary_df$availability)
 
 doc_perc <- paste0(round((doc_n/ep_lists)*100,0), '%')
 
@@ -136,17 +136,16 @@ coalitions_n <- length(summary_df$is_coalition[summary_df$availability==1 & summ
 coalitions_perc <- paste0(round(coalitions_n/doc_n,2)*100, '%')
 nocoalitions_perc <- paste0(100-round(coalitions_n/doc_n,2)*100, '%')
 
-
-
 summary_votes <- 
   summary_df |> 
   summarise(
     .by = countryname,
-    votes_docs = sum(vs_2024[availability==1]),
-    votes_man = sum(vs_2024[doc_type==1]),
-    votes_noman = sum(vs_2024[doc_type %in% c(2)]),
-    votes_other = sum(vs_2024[doc_type %in% c(3)])
+    votes_docs = sum(vs_2024[availability==1], na.rm=T),
+    votes_man = sum(vs_2024[doc_type==1], na.rm=T),
+    votes_noman = sum(vs_2024[doc_type %in% c(2)], na.rm=T),
+    votes_other = sum(vs_2024[doc_type %in% c(3)], na.rm=T)
   )
+
 
 missing_countries <- summary_votes |> filter(votes_docs==0) %>% .$countryname
 avail_countries_n <- length(unique(summary_votes$countryname)) - length(missing_countries)
@@ -187,7 +186,7 @@ doc_votes_df   <-
   rename(`Document type` = name) 
 
 
-doc_votes_df$`Document type` <- factor(x = doc_votes_df$`Document type`, levels = c('Manifesto', 'Pledges or else', 'Other'))
+doc_votes_df$`Document type` <- factor(x = doc_votes_df$`Document type`, levels = c('Manifesto', 'Short programme', 'Other'))
 
 doc_votes_plot <- 
   doc_votes_df |> 
