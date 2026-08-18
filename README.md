@@ -112,6 +112,20 @@ To resume after an interruption, simply re-run the command — already-converted
 
 ---
 
+## Citation
+
+```bibtex
+@misc{ZA9209,
+  author       = "Carteny, Giuseppe and K{\"o}nig, Philipp and Adhikari, Divya and Braun, Daniela and Reinl, Ann-Kathrin and Navarrete, Rosa and Hartland, Alexander and Corp, Spencer and Rohleder-Stribl, Sayman",
+  title        = "European Parliament Elections – Euromanifesto Study (Documents 2024)",
+  year         = "2026",
+  howpublished = "(ZA9209; Version 1.0.0) [Data set]. GESIS, Cologne. https://doi.org/10.4232/1.14822",
+  doi          = "10.4232/1.14822",
+}
+```
+
+---
+
 ## Notes
 
 - `.doc` files (old binary Word format) must go through Step 1 before Step 2 will process them.
