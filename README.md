@@ -1,4 +1,4 @@
-# em24
+# European Parliament Elections – Euromanifesto Study 2024
 Public repository for the preparation of Euromanifesto 2024 data. 
 
 Source documents are PDFs, Word files, and images. The pipeline converts them to clean Markdown using [marker-pdf](https://github.com/VikParuchuri/marker).
