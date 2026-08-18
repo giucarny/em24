@@ -24,9 +24,9 @@ Source documents are PDFs, Word files, and images. The pipeline converts them to
 
 ## Data
 
-The `data/` directory is not committed to this repository. Documents must be collected manually from GESIS:
+The `data/` directory is not committed to this repository. Documents must be collected manually from the [GESIS data archive](https://search.gesis.org/research_data/ZA9209?doi=10.4232/1.14822):
 
-1. Download the manifesto documents from GESIS.
+1. Download the manifesto documents from [GESIS (ZA9209, doi:10.4232/1.14822)](https://search.gesis.org/research_data/ZA9209?doi=10.4232/1.14822).
 2. Place the documents under `data/EM2024/pdf/`, organised in per-country subdirectories (e.g. `data/EM2024/pdf/Germany/`).
 
 ### Metadata spreadsheet
